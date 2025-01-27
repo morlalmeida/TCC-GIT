@@ -1,0 +1,24 @@
+
+ 2     1.0      ! Nblades  
+
+ 0.65  5.8   ! CL0     CL_a
+ -0.5  1.0   ! CLmin   CLmax
+
+ 0.013  0.050  0.015 0.85  !  CD0    CD2u   CD2l   CLCD0 
+ 175000  -0.4              !  REref  REexp
+
+ 0.0     0.05     1.0  !  XIdes  (r_R locations where design cl is specified)
+ 0.6     0.7     0.8 !  Radd   Cadd   Badd  
+
+
+0.1    ! hub radius (m)
+1.0    ! tip radius (m) 
+0.0    ! speed (m/s)
+4500   ! rpm 
+
+2500 ! Thrust (N)
+0.0  ! Power (W)
+
+0.0  ! Ldes KQdes (optional)
+
+30   ! Nout number of output stations

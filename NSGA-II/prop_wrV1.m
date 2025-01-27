@@ -1,6 +1,6 @@
-%% Setting Base Propeller
-clc;clear
+function prop_wrV1(x)
 
+%% Setting Base Propeller
 D = 57; % Propeller diameter [in]
 length1  = D/39.37; % Propeller diameter [m]
 r_length = length1/2;
@@ -22,8 +22,8 @@ c_fit = polyfit(section,chord_base,4);
 % x(6) to x(9) - coefficients of chord distribuition
 % x(10) - perfil
 
-D_otm = 68;
-pitch = 25;
+D_otm = x(1);
+pitch = x(2);
 r_otm_in = D_otm/2;
 length_otm = D_otm/39.37;
 rlength_otm = length_otm/2;
@@ -37,32 +37,31 @@ for j = 1:length(section)
     j = j+1;
 end
  
-
 beta75_otm = beta_otm(12);
 check_pitch = tand(beta75_otm)*pi*D_otm*0.75;
 
-N_blade = 2;
+N_blade = floor(x(3));
 Re_exp  = -0.2;
 
 % Get discretized points of beta and chord from the splines
-beta    = beta';
-chord   = c';
-r       = r';
+beta    = beta_otm';
+chord   = chord_otm';
+r       = r_otm';
 
 %% Write propeller file
-propeller = fopen('prop.txt','wt');                                          % Create prop.txt file
+propeller = fopen('prop.txt','wt');                                         % Create prop.txt file
 
-length1  = 2*39.37*R;                                                        % Diameter given in inches
-angle   = 2*pi*R*tand(beta(end));                                           % Pitch angle
-fprintf(propeller, 'TUC %.0fx%.0f \n\n', length1,angle);                     % Propeller identification name
-fprintf(propeller, '%2.0f  %.2f ! Nblades R \n\n', N_blade, R);             % Number of blades and reference radius of the blade
+length1  = D_otm;                                                           % Diameter given in inches
+angle   = pi*0.75*D_otm*tand(beta(12));                                     % Pitch angle
+fprintf(propeller, 'TCC %.0fx%.0f \n\n', length1,angle);                    % Propeller identification name
+fprintf(propeller, '%2.0f  %.2f ! Nblades R \n\n', N_blade, D_otm/2);       % Number of blades and reference radius of the blade
 fac = ones(1,3);
 add = zeros(1,3);
 josh = [0.0000  6.2832];
 joshin = [-0.8000  1.2000];
 joshao = [0.01000  0.00800  0.00600  0.4000];
 joshen = [150000.0  -0.500];
-A = [r' chord' beta']';
+A = [r chord beta]';
 
 fprintf(propeller, '%5.2f %6.2f     ! Clo Cla \n',josh);
 fprintf(propeller, '%5.1f %6.2f     ! Clmin Clmax \n\n',joshin);

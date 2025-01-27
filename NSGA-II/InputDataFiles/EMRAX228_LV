@@ -1,0 +1,10 @@
+
+EMRAX 228 LV compact axial flux permanent magnet synchronous electric motor 
+
+1     ! motor type (Permanent magnet DC)
+
+
+0.00135   ! Rmotor (Ohms)
+
+188   ! Io      (Amps)  No load current (40% Rated current)
+30.94   ! Kv    (rpm/Volt)

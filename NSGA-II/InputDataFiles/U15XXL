@@ -1,0 +1,10 @@
+
+U15XXL compact axial flux permanent magnet synchronous electric motor 
+
+1     ! motor type (Permanent magnet DC)
+
+
+0.020   ! Rmotor (Ohms)
+
+40     ! Io    (Amps)  No load current (40% Rated current)
+29     ! Kv    (rpm/Volt)
