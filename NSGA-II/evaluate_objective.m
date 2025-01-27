@@ -55,9 +55,12 @@ function f = evaluate_objective(x, M, V)
 % % Decision variables are used to form the objective function.
 % f(2) = sum;
 
-%% My Function
+%% Setting Functions for Optimization
 prop_wrV1(x)
-qprop_2
+% qprop_2
+% [Result1] = stat_qprop();
+[Result2] = dyn_qprop;
+[fspeed,Vs] = power_thrust(Result2);
 
 %% Check for error
 if length(f) ~= M

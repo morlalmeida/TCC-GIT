@@ -2,18 +2,19 @@
 % Luca Morla de Almeida
 % May 2024
 
-function power_thrust(Result2)
+function [fspeed,Vs] = power_thrust(Result2)
 %% ============================ INPUTS ====================================
 Sw   = 12.25;   % Wing Area [m^2]
 MTOW = 870;    % Take-Off Weight [kg]
 g    = 9.81;   % Gravity [m/s^2]
 rho  = 1.225;  % Air Density [kg/m^3]
+plot = 0;      % Boolean for plotting graphs
 % load('68x345prop.mat')% Comentar se for usar como FUNCTION do QPROP;
 % Tenha certeza que as dimensões do Result sejam as mesmas das velocidades.
 
 %% ========================== LIFT & DRAG =================================
 
-v = linspace(5,56,100);  % Velocities to be analyzed
+v = linspace(5,56,200);  % Velocities to be analyzed
 n1 = size(v);
 n1 = n1(1,2);
 
@@ -45,15 +46,25 @@ end
 
 %% ===================== AVAILABLE POWER/THRUST ===========================
 
-Pelectric = 4*Result.Pelectric;
-Thrust    = 4*Result.Thrust/g;
+Pelectric = 4*Result2.Pelectric;
+Thrust    = 4*Result2.Thrust/g;
 
-Pelectric2 = (4*Result.Thrust).*v/1000;
+Pelectric2 = (4*Result2.Thrust).*v/1000;
 D = 0.5.*v.^2*Sw.*rho.*CD;
 ReqPow = D.*v/1000;
+error = 1;
+j = 1;
+
+for i = 1:n1
+    real = abs(Pelectric2(i) - ReqPow(i));
+    if real <= error
+        fspeed(j) = v(i);
+        j = j+1;
+    end
+end
 
 %% ============================ PLOTTING ==================================
-
+if plot == 1
 figure(1) 
 % plot (v,Pelectric,'-b','LineWidth',1.5)
 % hold on
@@ -131,4 +142,5 @@ xlabel('Velocity [m/s]')
 ylabel('Thrust [kgf]')
 xlim([5 55])
 % xline(22.23,'--k','Linewidth',1,'Label','Stall')
+end
 end
