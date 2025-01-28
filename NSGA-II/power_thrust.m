@@ -9,6 +9,7 @@ MTOW = 870;    % Take-Off Weight [kg]
 g    = 9.81;   % Gravity [m/s^2]
 rho  = 1.225;  % Air Density [kg/m^3]
 plot = 0;      % Boolean for plotting graphs
+fspeed = [];
 % load('68x345prop.mat')% Comentar se for usar como FUNCTION do QPROP;
 % Tenha certeza que as dimensões do Result sejam as mesmas das velocidades.
 
@@ -58,10 +59,23 @@ j = 1;
 for i = 1:n1
     real = abs(Pelectric2(i) - ReqPow(i));
     if real <= error
-        fspeed(j) = v(i);
+        fspeed(j) = (v(i-1) + v(i+1))/2;
         j = j+1;
     end
 end
+
+if isempty(fspeed) || fspeed(j-1) <= Vs
+    error = 40;
+    for i = 1:n1
+        real = abs(Pelectric2(i) - ReqPow(i));
+        if real <= error
+            fspeed(j) = (v(i-1) + v(i+1))/2;
+            j = j+1;
+        end
+    end
+    fspeed = sort(fspeed);
+end
+
 
 %% ============================ PLOTTING ==================================
 if plot == 1

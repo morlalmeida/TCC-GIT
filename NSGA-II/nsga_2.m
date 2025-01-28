@@ -79,7 +79,17 @@ gen = round(gen);
 % range for the variables in the decision variable space. User has to
 % define the objective functions using the decision variables. Make sure to
 % edit the function 'evaluate_objective' to suit your needs.
-[M, V, min_range, max_range] = objective_description_function();
+% [M, V, min_range, max_range] = objective_description_function();
+
+M = 2; % Number of Objectives (Flight Speed & Thrust at Hover)
+V = 3; % Number of Decision Variables (Diameter, Pitch & Number of Blades)
+
+min_range = [50; 27; 2];
+% [min Diameter; min Pitch; min No of Blades]
+
+max_range = [72; 40; 4.99];
+% [max Diameter; max Pitch; max No of Blades]
+
 
 %% Initialize the population
 % Population is initialized with random values which are within the

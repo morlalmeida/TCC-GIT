@@ -1,6 +1,9 @@
 %% Initializing NSGA-II
 
-pop = 20;
-gen = 5;
+clc;clear;close all
+pop = 20;       % Sets population size (min = 20)
+gen = 5;        % Sets number of generations (min = 5)
 
-nsga_2(pop,gen)
+tic
+nsga_2(pop,gen) % Running Optmization :)
+toc

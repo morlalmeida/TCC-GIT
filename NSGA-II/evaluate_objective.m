@@ -56,11 +56,13 @@ function f = evaluate_objective(x, M, V)
 % f(2) = sum;
 
 %% Setting Functions for Optimization
-prop_wrV1(x)
+% prop_wrV1(x)
 % qprop_2
 % [Result1] = stat_qprop();
-[Result2] = dyn_qprop;
-[fspeed,Vs] = power_thrust(Result2);
+% [Result2] = dyn_qprop;
+% [fspeed,Vs] = power_thrust(Result2);
+
+[f] = evaluatefitness(x);
 
 %% Check for error
 if length(f) ~= M
