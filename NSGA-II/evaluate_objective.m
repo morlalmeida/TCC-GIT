@@ -63,6 +63,19 @@ function f = evaluate_objective(x, M, V)
 % [fspeed,Vs] = power_thrust(Result2);
 
 [f] = evaluatefitness(x);
+if f == [1e10, 1e10]
+    fprintf('Bad Prop :( \n');
+    fprintf('Running next individual! \n');
+    fprintf('-------------------------------------------------------------------------------------------------------- \n');
+else
+    fprintf('Nice Prop :D \n');
+    fprintf('Fitness:          %0.2f, %0.2f \n', f(1), f(2));
+    fprintf('Diameter:         %.2f \n', x(1));
+    fprintf('Pitch:            %.2f \n', x(2));
+    fprintf('Number of Blades: %d \n', floor(x(3)));
+    fprintf('Running next individual! \n');
+    fprintf('-------------------------------------------------------------------------------------------------------- \n');
+end
 
 %% Check for error
 if length(f) ~= M

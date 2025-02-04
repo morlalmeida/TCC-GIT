@@ -1,6 +1,5 @@
 function fitness = evaluatefitness(x)
 %% Setting Initial Parameters    
-    clc;
     M = 2; % Number of objectives
     fitness = [1e10, 1e10]; % Default to infeasible output in case of error;
 
@@ -26,9 +25,15 @@ function fitness = evaluatefitness(x)
     try
         prop_wrV1(x)                            % Generating Propller Archive
         % delete('LastRun.dat')
-        % [Result1] = stat_qprop();             % Running Static QPROP -
-        % Hover
-        delete('LastRun.dat')                   
+        [Result1] = stat_qprop;                 % Running Static QPROP - Hover
+        hover_thrust = 4*Result1.Thrust;
+        thrust_index = hover_thrust/(870*9.787);
+
+        if thrust_index < 1.4
+            return
+        end
+
+        % delete('LastRun.dat')                   
         [Result2] = dyn_qprop;                  % Running Dynamic QPROP - Cruise
         [fspeed,Vs] = power_thrust(Result2);    % Obtaining Flight Speed
 
@@ -56,7 +61,7 @@ function fitness = evaluatefitness(x)
         end
 
 %% Genererating Fitness Vector
-        fitness(1) = -(1+(1.6 - 1)*rand);
+        fitness(1) = -(thrust_index);
         fitness(2) = -(0.8*fspeed_true/Vs);
     catch
     end

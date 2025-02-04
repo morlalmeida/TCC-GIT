@@ -84,10 +84,10 @@ gen = round(gen);
 M = 2; % Number of Objectives (Flight Speed & Thrust at Hover)
 V = 3; % Number of Decision Variables (Diameter, Pitch & Number of Blades)
 
-min_range = [50; 27; 2];
+min_range = [50; 20; 2];
 % [min Diameter; min Pitch; min No of Blades]
 
-max_range = [72; 40; 4.99];
+max_range = [72; 50; 5.99];
 % [max Diameter; max Pitch; max No of Blades]
 
 
@@ -187,9 +187,11 @@ for i = 1 : gen
     % last front is included in the population based on the individuals with
     % least crowding distance
     chromosome = replace_chromosome(intermediate_chromosome, M, V, pop);
-    if ~mod(i,100)
+    if ~mod(i,1)
         clc
         fprintf('%d generations completed\n',i);
+        fprintf('Running next generation!\n');
+        fprintf('-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\- \n');
     end
 end
 

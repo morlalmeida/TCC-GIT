@@ -1,4 +1,4 @@
-[Result1] = function stat_qprop
+function [Result1] = stat_qprop
 vel_design = 2; % m/s
 RPM_op = 3000; 
 file = 'qmil_inputfile'; 
@@ -21,7 +21,7 @@ inputs =   {'Velocity'
             'Pele'};
 j = 1; 
 %% -------------------------- Set for static ------------------------------
-    for i = 1000:50:6500
+    for i = 3000
         Setpoint.Velocity = vel_design;    % Always define
         Setpoint.RPM      = i;
         Setpoint.Voltage  = [];

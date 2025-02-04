@@ -6,8 +6,8 @@ function [fspeed,Vs] = power_thrust(Result2)
 %% ============================ INPUTS ====================================
 Sw   = 12.25;   % Wing Area [m^2]
 MTOW = 870;    % Take-Off Weight [kg]
-g    = 9.81;   % Gravity [m/s^2]
-rho  = 1.225;  % Air Density [kg/m^3]
+g    = 9.787;   % Gravity [m/s^2]
+rho  = 1.15;  % Air Density [kg/m^3]
 plot = 0;      % Boolean for plotting graphs
 fspeed = [];
 % load('68x345prop.mat')% Comentar se for usar como FUNCTION do QPROP;
@@ -15,7 +15,7 @@ fspeed = [];
 
 %% ========================== LIFT & DRAG =================================
 
-v = linspace(5,56,200);  % Velocities to be analyzed
+v = linspace(5,60,300);  % Velocities to be analyzed
 n1 = size(v);
 n1 = n1(1,2);
 
@@ -25,13 +25,13 @@ for i = 1:n1
     CL(1,i) = 2*MTOW*g/(rho*Sw*v(1,i)^2);
 end
 
-Vs = sqrt((2*MTOW*g)/(rho*Sw*1.389));
+Vs = sqrt((2*MTOW*g)/(rho*Sw*1.673));
 
 % Drag Polar input
 
 CD = zeros(1,n1);
 for i = 1:n1
-    CD(1,i) = 0.0018 - (0.0091*CL(1,i)) + (0.094*(CL(1,i)^2));
+    CD(1,i) = 0.0347 - (0.0159*CL(1,i)) + (0.0931*(CL(1,i)^2));
 end
 
 %% ===================== REQUIRED POWER/THRUST ============================

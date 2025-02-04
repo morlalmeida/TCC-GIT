@@ -16,7 +16,7 @@ inputs =   {'Velocity'
             'Pele'};
 j = 1;
 
-for i = linspace(5,56,200)
+for i = linspace(5,60,300)
         Setpoint.Velocity = i;    % Always define
         Setpoint.RPM      = RPM_op;
         Setpoint.Voltage  = [];
