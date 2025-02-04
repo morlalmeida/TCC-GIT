@@ -87,7 +87,7 @@ V = 3; % Number of Decision Variables (Diameter, Pitch & Number of Blades)
 min_range = [50; 20; 2];
 % [min Diameter; min Pitch; min No of Blades]
 
-max_range = [72; 50; 5.99];
+max_range = [72; 50; 4.99];
 % [max Diameter; max Pitch; max No of Blades]
 
 
