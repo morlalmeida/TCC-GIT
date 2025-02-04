@@ -1,11 +1,11 @@
-function fitness = evaluatefitness(x)
+function fitness = evaluate_fitness(x)
 %% Setting Initial Parameters    
     M = 2; % Number of objectives
     fitness = [1e10, 1e10]; % Default to infeasible output in case of error;
 
     Diameter = x(1);
     Pitch = x(2);
-    Nblades = floor(x(3));
+    Nblades = round(x(3));
     RPM_op = 3000;
 
 %% Checking Tip Speed Conformity
@@ -24,7 +24,6 @@ function fitness = evaluatefitness(x)
  %% Running QPROP, Thrust and Flight Speed
     try
         prop_wrV1(x)                            % Generating Propller Archive
-        % delete('LastRun.dat')
         [Result1] = stat_qprop;                 % Running Static QPROP - Hover
         hover_thrust = 4*Result1.Thrust;
         thrust_index = hover_thrust/(870*9.787);
@@ -32,8 +31,7 @@ function fitness = evaluatefitness(x)
         if thrust_index < 1.4
             return
         end
-
-        % delete('LastRun.dat')                   
+              
         [Result2] = dyn_qprop;                  % Running Dynamic QPROP - Cruise
         [fspeed,Vs] = power_thrust(Result2);    % Obtaining Flight Speed
 

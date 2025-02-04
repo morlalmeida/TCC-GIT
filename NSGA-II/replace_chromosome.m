@@ -35,13 +35,34 @@ function f  = replace_chromosome(intermediate_chromosome, M, V,pop)
 [N, m] = size(intermediate_chromosome);
 
 % Get the index for the population sort based on the rank
-[temp,index] = sort(intermediate_chromosome(:,M + V + 1));
+        % [temp,index] = sort(intermediate_chromosome(:,M + V + 1));
+% Compute constraint violations
+
+violations = compute_constraint_violation(intermediate_chromosome(:, 1:V));
+
+% Identify feasible and infeasible solutions
+feasible = violations == 0;
+infeasible = violations > 0;
+
+% Assign ranks: Feasible solutions keep their rank, infeasible solutions get penalized
+ranks = intermediate_chromosome(:, M + V + 1);
+ranks(infeasible) = max(ranks) + violations(infeasible); % Penalize infeasible solutions
+
+% Sort by rank first, then by crowding distance
+[~, sorted_indices] = sortrows([ranks, -intermediate_chromosome(:, M + V + 2)], [1, 2]);
+
+% Now sort the individuals based on the new ranking
+sorted_chromosome = intermediate_chromosome(sorted_indices, :);
 
 clear temp m
 
 % Now sort the individuals based on the index
+% for i = 1 : N
+%     sorted_chromosome(i,:) = intermediate_chromosome(index(i),:);
+% end
+
 for i = 1 : N
-    sorted_chromosome(i,:) = intermediate_chromosome(index(i),:);
+    sorted_chromosome(i,:) = intermediate_chromosome(sorted_indices(i),:);
 end
 
 % Find the maximum rank in the current population

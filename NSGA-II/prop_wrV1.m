@@ -40,7 +40,7 @@ end
 beta75_otm = beta_otm(12);
 check_pitch = tand(beta75_otm)*pi*D_otm*0.75;
 
-N_blade = floor(x(3));
+N_blade = round(x(3));
 Re_exp  = -0.2;
 
 % Get discretized points of beta and chord from the splines

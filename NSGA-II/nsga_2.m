@@ -158,6 +158,11 @@ for i = 1 : gen
     offspring_chromosome = ...
         genetic_operator(parent_chromosome, ...
         M, V, mu, mum, min_range, max_range);
+    
+    % Repair all offspring solutions (Feasibility Enhancement)
+    for j = 1 : size(offspring_chromosome, 1)
+        offspring_chromosome(j, 1:V) = repair_function(offspring_chromosome(j, 1:V));
+    end
 
     % Intermediate population
     % Intermediate population is the combined population of parents and

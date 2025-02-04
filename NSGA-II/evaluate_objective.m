@@ -56,13 +56,8 @@ function f = evaluate_objective(x, M, V)
 % f(2) = sum;
 
 %% Setting Functions for Optimization
-% prop_wrV1(x)
-% qprop_2
-% [Result1] = stat_qprop();
-% [Result2] = dyn_qprop;
-% [fspeed,Vs] = power_thrust(Result2);
 
-[f] = evaluatefitness(x);
+[f] = evaluate_fitness(x);
 if f == [1e10, 1e10]
     fprintf('Bad Prop :( \n');
     fprintf('Running next individual! \n');
