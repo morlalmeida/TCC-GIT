@@ -58,7 +58,7 @@ function f = evaluate_objective(x, M, V)
 %% Setting Functions for Optimization
 
 [f] = evaluate_fitness(x);
-if f == [1e10, 1e10]
+if f == [1e6, 1e6]
     fprintf('Bad Prop :( \n');
     fprintf('Running next individual! \n');
     fprintf('-------------------------------------------------------------------------------------------------------- \n');
@@ -67,7 +67,7 @@ else
     fprintf('Fitness:          %0.2f, %0.2f \n', f(1), f(2));
     fprintf('Diameter:         %.2f \n', x(1));
     fprintf('Pitch:            %.2f \n', x(2));
-    fprintf('Number of Blades: %d \n', floor(x(3)));
+    fprintf('Number of Blades: %d \n', round(x(3)));
     fprintf('Running next individual! \n');
     fprintf('-------------------------------------------------------------------------------------------------------- \n');
 end

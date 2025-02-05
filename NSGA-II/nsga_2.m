@@ -84,10 +84,10 @@ gen = round(gen);
 M = 2; % Number of Objectives (Flight Speed & Thrust at Hover)
 V = 3; % Number of Decision Variables (Diameter, Pitch & Number of Blades)
 
-min_range = [50; 20; 2];
+min_range = [50; 25; 2];
 % [min Diameter; min Pitch; min No of Blades]
 
-max_range = [72; 50; 4.99];
+max_range = [72; 48; 3.99];
 % [max Diameter; max Pitch; max No of Blades]
 
 
@@ -153,8 +153,13 @@ for i = 1 : gen
     % algorithm, while in this program only the real-coded GA is considered.
     % The distribution indeices for crossover and mutation operators as mu = 20
     % and mum = 20 respectively.
-    mu = 20;
-    mum = 20;
+
+    % % mu = 20;
+    % % mum = 20;
+
+    mu = 15; % To increase crossover impact
+    mum = 2; % To increase mutation strength
+
     offspring_chromosome = ...
         genetic_operator(parent_chromosome, ...
         M, V, mu, mum, min_range, max_range);

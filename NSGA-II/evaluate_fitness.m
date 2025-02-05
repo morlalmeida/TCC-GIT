@@ -4,7 +4,7 @@ function fitness = evaluate_fitness(x)
 
     %% Setting Initial Parameters    
     M = 2; % Number of objectives
-    fitness = [1e10, 1e10]; % Default infeasible output
+    fitness = [1e6, 1e6]; % Default infeasible output
 
     Diameter = x(1);
     Pitch = x(2);

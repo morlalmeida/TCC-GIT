@@ -1,0 +1,21 @@
+Dados fpareto3
+pop = 50
+gen = 5
+Tempo: 1h43
+
+Modificações para fpareto4
+
+ - Mudança de limites
+	min_range = [50; 25; 2];
+	% [min Diameter; min Pitch; min No of Blades]
+
+	max_range = [72; 48; 3.99];
+	% [max Diameter; max Pitch; max No of Blades]
+	
+	- Aumento de probabilidade de crossover (genetic_operator: rand(1) < (para 0.75)
+	
+	- Implementação de mutação híbrida (genetic_operator_V1 para genetic_operator)
+	
+	- mum diminuido para 6
+	
+

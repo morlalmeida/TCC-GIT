@@ -46,7 +46,10 @@ infeasible = violations > 0;
 
 % Assign ranks: Feasible solutions keep their rank, infeasible solutions get penalized
 ranks = intermediate_chromosome(:, M + V + 1);
-ranks(infeasible) = max(ranks) + violations(infeasible); % Penalize infeasible solutions
+ranks(infeasible) = max(ranks) + 0.3 * violations(infeasible); % Penalize infeasible solutions
+
+% Add a small noise to break tie-ranks BEFORE sorting
+ranks = ranks + rand(size(ranks)) * 0.002;
 
 % Sort by rank first, then by crowding distance
 [~, sorted_indices] = sortrows([ranks, -intermediate_chromosome(:, M + V + 2)], [1, 2]);

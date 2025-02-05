@@ -18,7 +18,7 @@ function x_repaired = repair_function(x)
     % Adjust Diameter or Blades if Hover Thrust is Too Low
     % -------------------------------
     if thrust_index < min_hover_thrust
-        if x(3) < 5 % Increase number of blades if not too high
+        if round(x(3)) < 4 % Increase number of blades if not too high
             x(3) = x(3) + 1;
         else
             x(1) = x(1) * 1.05; % Otherwise, increase diameter by 5%
