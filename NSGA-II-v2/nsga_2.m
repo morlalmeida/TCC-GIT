@@ -79,7 +79,17 @@ gen = round(gen);
 % range for the variables in the decision variable space. User has to
 % define the objective functions using the decision variables. Make sure to
 % edit the function 'evaluate_objective' to suit your needs.
-[M, V, min_range, max_range] = objective_description_function();
+% [M, V, min_range, max_range] = objective_description_function();
+
+M = 2; % Number of Objectives (Flight Speed & Thrust at Hover)
+V = 3; % Number of Decision Variables (Diameter, Pitch & Number of Blades)
+
+min_range = [50; 25; 2];
+% [min Diameter; min Pitch; min No of Blades]
+
+max_range = [72; 50; 4.99];
+% [max Diameter; max Pitch; max No of Blades]
+
 
 %% Initialize the population
 % Population is initialized with random values which are within the
@@ -143,8 +153,8 @@ for i = 1 : gen
     % algorithm, while in this program only the real-coded GA is considered.
     % The distribution indeices for crossover and mutation operators as mu = 20
     % and mum = 20 respectively.
-    mu = 20;
-    mum = 20;
+    mu = 15;
+    mum = 8;
     offspring_chromosome = ...
         genetic_operator(parent_chromosome, ...
         M, V, mu, mum, min_range, max_range);
@@ -177,7 +187,7 @@ for i = 1 : gen
     % last front is included in the population based on the individuals with
     % least crowding distance
     chromosome = replace_chromosome(intermediate_chromosome, M, V, pop);
-    if ~mod(i,100)
+    if ~mod(i,1)
         clc
         fprintf('%d generations completed\n',i);
     end
