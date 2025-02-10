@@ -54,7 +54,7 @@ was_mutation = 0;
 
 for i = 1 : N
     % With 90 % probability perform crossover
-    if rand(1) < 0.90
+    if rand(1) < 0.9
         % Initialize the children to be null vector.
         child_1 = [];
         child_2 = [];
@@ -85,19 +85,11 @@ for i = 1 : N
             % For more information about SBX refer the enclosed pdf file.
             % Generate a random number
             u(j) = rand(1);
-
             if u(j) <= 0.5
                 bq(j) = (2*u(j))^(1/(mu+1));
             else
                 bq(j) = (1/(2*(1 - u(j))))^(1/(mu+1));
             end
-            
-            % % if u(j) <= 0.5
-            % %     bq(j) = (2*u(j))^(1/(15+1)); % More exploratory crossover
-            % % else
-            % %     bq(j) = (1/(2*(1 - u(j))))^(1/(15+1));
-            % % end
-
             % Generate the jth element of first child
             child_1(j) = ...
                 0.5*(((1 + bq(j))*parent_1(j)) + (1 - bq(j))*parent_2(j));
@@ -139,19 +131,11 @@ for i = 1 : N
         % Perform mutation on eact element of the selected parent.
         for j = 1 : V
            r(j) = rand(1);
-
            if r(j) < 0.5
                delta(j) = (2*r(j))^(1/(mum+1)) - 1;
            else
                delta(j) = 1 - (2*(1 - r(j)))^(1/(mum+1));
            end
-
-           % % if r(j) < 0.5
-           % %     delta(j) = (2*r(j))^(1/(10+1)) - 1; % Increase mutation effect
-           % % else
-           % %     delta(j) = 1 - (2*(1 - r(j)))^(1/(10+1));
-           % % end
-
            % Generate the corresponding child element.
            child_3(j) = child_3(j) + delta(j);
            % Make sure that the generated element is within the decision

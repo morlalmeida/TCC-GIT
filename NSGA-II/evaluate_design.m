@@ -7,7 +7,7 @@ function [fspeed_true, thrust_index] = evaluate_design(x)
     thrust_index = NaN;
 
 try
-        prop_wrV1(x); % Generate Propeller Archive
+        prop_wrV2(x); % Generate Propeller Archive
         
         % Run Static QPROP (Hover)
         Result1 = stat_qprop;

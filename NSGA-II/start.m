@@ -1,7 +1,7 @@
 %% Initializing NSGA-II
 clc;clear;close all
 pop = 20;      % Sets population size (min = 20)
-gen = 8;       % Sets number of generations (min = 5)
+gen = 5;       % Sets number of generations (min = 5)
 
 % 🔹 Ensure Parallel Pool is Active (Limited to 5 Workers)
 poolobj = gcp('nocreate'); 

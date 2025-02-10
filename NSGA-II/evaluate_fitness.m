@@ -1,4 +1,4 @@
-function fitness = evaluate_fitness(x)
+function [fitness,pitch] = evaluate_fitness(x)
     %% Load Global Parameters
     global Vs MTOW;
 
@@ -7,8 +7,8 @@ function fitness = evaluate_fitness(x)
     fitness = [1e6, 1e6]; % Default infeasible output
 
     Diameter = x(1);
-    Pitch = x(2);
-    Nblades = round(x(3));
+    % Pitch = x(2);
+    Nblades = round(x(2));
     RPM_op = 3000;
 
     %% Check Parallel Pool (Limited to 5 Cores)
@@ -23,7 +23,7 @@ function fitness = evaluate_fitness(x)
     TipSpeed = omega * R; % Tip speed (m/s)
     MaxTipSpeed = 340; % Maximum allowable tip speed (m/s)
 
-    if TipSpeed > 0.9 * MaxTipSpeed
+    if TipSpeed > 0.8 * MaxTipSpeed
         % Constraint violated, return infeasible solution
         fprintf('Tip speed exceeds Mach threshold! Mach: %.2f\n', TipSpeed / MaxTipSpeed);
         return;
@@ -31,7 +31,8 @@ function fitness = evaluate_fitness(x)
 
     %% Running QPROP
     try
-        prop_wrV1(x); % Generate Propeller Archive
+        [pitch] = prop_wrV3(x); % Generate Propeller Archive
+        % pitch = check_pitch;
         
         % Run Static QPROP (Hover)
         Result1 = stat_qprop;

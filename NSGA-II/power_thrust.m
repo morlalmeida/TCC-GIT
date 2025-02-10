@@ -15,7 +15,7 @@ fspeed = [];
 
 %% ========================== LIFT & DRAG =================================
 
-v = linspace(5,60,300);  % Velocities to be analyzed
+v = linspace(5,60,250);  % Velocities to be analyzed
 n1 = size(v);
 n1 = n1(1,2);
 

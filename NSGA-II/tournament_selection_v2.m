@@ -86,13 +86,13 @@ for i = 1 : pool_size
         find(c_obj_rank == min(c_obj_rank));
     % If more than one candiate have the least rank then find the candidate
     % within that group having the maximum crowding distance.
-    if length(min_candidate) ~= 1
+    if length(min_candidate) > 1
         max_candidate = ...
         find(c_obj_distance(min_candidate) == max(c_obj_distance(min_candidate)));
         % If a few individuals have the least rank and have maximum crowding
         % distance, select only one individual (not at random). 
-        if length(max_candidate) ~= 1
-            max_candidate = max_candidate(1);
+        if length(max_candidate) > 1
+            max_candidate = max_candidate(randi(length(max_candidate)));
         end
         % Add the selected individual to the mating pool
         f(i,:) = chromosome(candidate(min_candidate(max_candidate)),:);

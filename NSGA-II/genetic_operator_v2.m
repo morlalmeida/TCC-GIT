@@ -138,13 +138,26 @@ for i = 1 : N
         child_3 = parent_chromosome(parent_3,:);
         % Perform mutation on eact element of the selected parent.
         for j = 1 : V
-           r(j) = rand(1);
+            r(j) = rand(1);
 
-           if r(j) < 0.5
-               delta(j) = (2*r(j))^(1/(mum+1)) - 1;
+           % Randomly choose between two mutation strategies (Gaussian or Polynomial)
+            mutation_type = randi(2); 
+
+            if mutation_type == 1
+                % Gaussian Mutation (local fine-tuning)
+                if r(j) < 0.5
+                    delta(j) = (2*r(j))^(1/(mum+1)) - 1; % Lower mutation index (increased effect)
+                else
+                    delta(j) = 1 - (2*(1 - r(j)))^(1/(mum+1));
+                end
            else
-               delta(j) = 1 - (2*(1 - r(j)))^(1/(mum+1));
-           end
+                % Polynomial Mutation (higher exploration)
+                if r(j) < 0.5
+                    delta(j) = (1 - (2*(1 - r(j)))^(1/(3+1))) - 1; % Stronger perturbation
+                else
+                    delta(j) = 1 - (2*(1 - r(j)))^(1/(3+1));
+                end
+            end
 
            % % if r(j) < 0.5
            % %     delta(j) = (2*r(j))^(1/(10+1)) - 1; % Increase mutation effect

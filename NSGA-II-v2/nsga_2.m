@@ -79,23 +79,7 @@ gen = round(gen);
 % range for the variables in the decision variable space. User has to
 % define the objective functions using the decision variables. Make sure to
 % edit the function 'evaluate_objective' to suit your needs.
-% [M, V, min_range, max_range] = objective_description_function();
-
-M = 2; % Number of Objectives (Flight Speed & Thrust at Hover)
-V = 8; % Number of Decision Variables (Diameter, Pitch & Number of Blades)
-
-% min_range = [50; 25; 2; 0.60; 0.4 ; 0.10];
-% % [min Diameter; min Pitch; min No of Blades; min C_mid1/2 (norm); min C_tip (norm)]
-% 
-% max_range = [72; 48; 3.99; 1.20; 1.0 ; 0.40];
-% % [max Diameter; max Pitch; max No of Blades; max C_mid1/2 (norm); max C_tip (norm)]
-
-min_range = [50; 2; 0.60; 0.4 ; 0.10; 20; 0.5; 0.1];
-% [min Diameter; min Pitch; min No of Blades; min C_mid1/2 (norm); min C_tip (norm)]
-
-max_range = [72; 3.99; 1.20; 1.0 ; 0.40; 50; 1.2; 0.5];
-% [max Diameter; max Pitch; max No of Blades; max C_mid1/2 (norm); max C_tip (norm)]
-
+[M, V, min_range, max_range] = objective_description_function();
 
 %% Initialize the population
 % Population is initialized with random values which are within the
@@ -159,21 +143,11 @@ for i = 1 : gen
     % algorithm, while in this program only the real-coded GA is considered.
     % The distribution indeices for crossover and mutation operators as mu = 20
     % and mum = 20 respectively.
-
     mu = 20;
     mum = 20;
-
-    % mu = 15; % To increase crossover impact
-    % mum = 2; % To increase mutation strength
-
     offspring_chromosome = ...
         genetic_operator(parent_chromosome, ...
         M, V, mu, mum, min_range, max_range);
-    
-        % Repair all offspring solutions (Feasibility Enhancement)
-        % for j = 1 : size(offspring_chromosome, 1)
-        %     offspring_chromosome(j, 1:V) = repair_function(offspring_chromosome(j, 1:V));
-        % end
 
     % Intermediate population
     % Intermediate population is the combined population of parents and
@@ -203,11 +177,9 @@ for i = 1 : gen
     % last front is included in the population based on the individuals with
     % least crowding distance
     chromosome = replace_chromosome(intermediate_chromosome, M, V, pop);
-    if ~mod(i,1)
+    if ~mod(i,100)
         clc
         fprintf('%d generations completed\n',i);
-        fprintf('Running next generation!\n');
-        fprintf('-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\ \n');
     end
 end
 

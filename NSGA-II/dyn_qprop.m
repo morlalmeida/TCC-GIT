@@ -10,7 +10,7 @@ function [Result2] = dyn_qprop
     outputfile = 'LastRun2';
 
     % Define velocity range
-    velocity_range = linspace(5, 60, 300); % 300 test points
+    velocity_range = linspace(5, 60, 250); % 300 test points
 
     % Ensure Parallel Pool is Active (Limit to 5 Workers)
     poolobj = gcp('nocreate');
