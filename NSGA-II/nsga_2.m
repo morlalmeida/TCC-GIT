@@ -90,10 +90,10 @@ V = 8; % Number of Decision Variables (Diameter, Pitch & Number of Blades)
 % max_range = [72; 48; 3.99; 1.20; 1.0 ; 0.40];
 % % [max Diameter; max Pitch; max No of Blades; max C_mid1/2 (norm); max C_tip (norm)]
 
-min_range = [50; 2; 0.60; 0.4 ; 0.10; 20; 0.5; 0.1];
+min_range = [50; 2; 0.60; 0.4 ; 0.10; 20; 0.2; 0.1];
 % [min Diameter; min Pitch; min No of Blades; min C_mid1/2 (norm); min C_tip (norm)]
 
-max_range = [72; 3.99; 1.20; 1.0 ; 0.40; 50; 1.2; 0.5];
+max_range = [72; 3.99; 1.20; 1.0 ; 0.40; 50; 1.0; 0.3];
 % [max Diameter; max Pitch; max No of Blades; max C_mid1/2 (norm); max C_tip (norm)]
 
 
@@ -160,11 +160,11 @@ for i = 1 : gen
     % The distribution indeices for crossover and mutation operators as mu = 20
     % and mum = 20 respectively.
 
-    mu = 20;
-    mum = 20;
+    % mu = 20;
+    % mum = 20;
 
-    % mu = 15; % To increase crossover impact
-    % mum = 2; % To increase mutation strength
+    mu = 15; % To increase crossover impact
+    mum = 2; % To increase mutation strength
 
     offspring_chromosome = ...
         genetic_operator(parent_chromosome, ...

@@ -23,7 +23,7 @@ function [fitness,pitch] = evaluate_fitness(x)
     TipSpeed = omega * R; % Tip speed (m/s)
     MaxTipSpeed = 340; % Maximum allowable tip speed (m/s)
 
-    if TipSpeed > 0.8 * MaxTipSpeed
+    if TipSpeed > 0.9 * MaxTipSpeed
         % Constraint violated, return infeasible solution
         fprintf('Tip speed exceeds Mach threshold! Mach: %.2f\n', TipSpeed / MaxTipSpeed);
         return;

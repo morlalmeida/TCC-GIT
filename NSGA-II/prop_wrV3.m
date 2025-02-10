@@ -10,8 +10,14 @@ beta_base = [44.3	38.0	33.2	29.5	26.5	24.1	22.1	20.5	19.0	17.8	16.7	15.8	15.0	14
 
 i = 1;
 for i = 1:18
-    section(i) = r_base(i)/r_length;
+    section_base(i) = r_base(i)/r_length;
     i = i+1;
+end
+
+kk = 1;
+for i = linspace(0.1,1,55)
+    section(kk) = i;
+    kk = kk+1;
 end
 
 D_otm = x(1);
@@ -60,7 +66,7 @@ for j = 1:length(section)
     j = j+1;
 end
 
-beta75_otm = beta_bezier(12);
+beta75_otm = beta_bezier(40);
 check_pitch = tand(beta75_otm)*pi*D_otm*0.75;
 
 % c_fit = polyfit(section,chord_base,4);
@@ -97,7 +103,7 @@ r       = r_otm';
 propeller = fopen('prop.txt','wt');                                         % Create prop.txt file
 
 length1  = D_otm;                                                           % Diameter given in inches
-angle   = pi*0.75*D_otm*tand(beta(12));                                     % Pitch angle
+angle   = pi*0.75*D_otm*tand(beta(40));                                     % Pitch angle
 fprintf(propeller, 'TCC %.0fx%.0f \n\n', length1,angle);                    % Propeller identification name
 fprintf(propeller, '%2.0f  %.2f ! Nblades R \n\n', N_blade, D_otm/2);       % Number of blades and reference radius of the blade
 fac = ones(1,3);
