@@ -1,63 +1,62 @@
 function [Result1] = stat_qprop
-vel_design = 2; % m/s
-RPM_op = 3000; 
-file = 'qmil_inputfile'; 
-motorfile = 'EMRAX228_LV'; % File containing motor info
-%% ------------------------------QMIL--------------------------------------
-% commandstring = ['qmil ' file ...
-%                   '  propfile_qmil  '];
-% system(commandstring);
+    vel_design = 2; % m/s
+    RPM_range = linspace(200, 4000, 100); % RPM values
+    num_RPMs = numel(RPM_range);
 
-%% ----------------------- Inputs for QPROP ------------------------------
-propfile = 'prop.txt'; % File containing prop info = QMIL's output
-outputfile = 'LastRun1';
-inputs =   {'Velocity'
-            'RPM'
-            'Voltage'
-            'dBeta'
-            'Thrust'
-            'Torque'
-            'Current'
-            'Pele'};
-j = 1; 
-%% -------------------------- Set for static ------------------------------
-    for i = 3000
-        Setpoint.Velocity = vel_design;    % Always define
-        Setpoint.RPM      = i;
-        Setpoint.Voltage  = [];
-        Setpoint.dBeta    = 0.0;           % Leave as 0.0
-        Setpoint.Thrust   = [];
-        Setpoint.Torque   = [];
-        Setpoint.Current  = [];
-        Setpoint.Pele     = [];            % Leave Empty
+    propfile = 'prop.txt'; % File containing prop info
+    motorfile = 'EMRAX228_LV'; % File containing motor info
+    outputfile = 'LastRun1';
 
-    SetpointString = [];
-        for n=1:numel(inputs)
-        if isempty(Setpoint.(inputs{n}))==1
-            SetpointString = [SetpointString ' 0'];
-        else    
-            SetpointString = [SetpointString ' ' num2str(Setpoint.(inputs{n}))];
-        end
-        end
+    % Preallocate arrays (MATLAB does not allow struct field modification in parfor)
+    Velocity = zeros(1, num_RPMs);
+    Freestream = zeros(1, num_RPMs);
+    RPMs = zeros(1, num_RPMs);
+    Thrust = zeros(1, num_RPMs);
+    Torque = zeros(1, num_RPMs);
+    Voltage = zeros(1, num_RPMs);
+    Current = zeros(1, num_RPMs);
+    Pelectric = zeros(1, num_RPMs);
 
+    % Use parallel loop
+    parfor j = 1:num_RPMs
+        i = RPM_range(j);
 
-    commandstring = ['qprop.exe ' propfile ...
-                     ' InputDataFiles\' motorfile ...
-                     SetpointString ' > ' outputfile '.dat'];
-    system(commandstring);
+        % Generate unique output filename per worker
+        temp_outputfile = [outputfile '_' num2str(j) '.dat'];
 
-    run_results = importdata( [outputfile '.dat'],' ',17);
+        % Construct setpoint string explicitly (avoid struct inside parfor)
+        SetpointString = sprintf(' %f %f 0 0 0 0 0 0', vel_design, i);
 
-    Result1.Velocity(j)           = vel_design;
-    Result1.Freestream(j)         = run_results.data(:,1);
-    Result1.RPMs(j)               = run_results.data(:,2);
-    Result1.Thrust(j)             = run_results.data(:,4);
-    Result1.Torque(j)             = run_results.data(:,5);
-    Result1.Voltage(j)            = run_results.data(:,7);
-    Result1.Current(j)            = run_results.data(:,8);
-    Result1.Pelectric(j)          = (run_results.data(:,16))/1000;
+        % Run QPROP
+        commandstring = ['qprop.exe ' propfile ...
+                         ' InputDataFiles\' motorfile ...
+                         SetpointString ' > ' temp_outputfile];
+        system(commandstring);
 
-    delete([outputfile '.dat'])
-    j = j +1;
+        % Read results
+        run_results = importdata(temp_outputfile, ' ', 17);
+
+        % Store results in temporary arrays
+        Velocity(j) = vel_design;
+        Freestream(j) = run_results.data(:,1);
+        RPMs(j) = run_results.data(:,2);
+        Thrust(j) = run_results.data(:,4);
+        Torque(j) = run_results.data(:,5);
+        Voltage(j) = run_results.data(:,7);
+        Current(j) = run_results.data(:,8);
+        Pelectric(j) = run_results.data(:,16) / 1000;
+
+        % Cleanup
+        delete(temp_outputfile);
     end
+
+    % Assign results to struct AFTER parfor loop
+    Result1.Velocity = Velocity;
+    Result1.Freestream = Freestream;
+    Result1.RPMs = RPMs;
+    Result1.Thrust = Thrust;
+    Result1.Torque = Torque;
+    Result1.Voltage = Voltage;
+    Result1.Current = Current;
+    Result1.Pelectric = Pelectric;
 end

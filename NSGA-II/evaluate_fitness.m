@@ -36,12 +36,25 @@ function [fitness,pitch] = evaluate_fitness(x)
         
         % Run Static QPROP (Hover)
         Result1 = stat_qprop;
-        hover_thrust = 4 * Result1.Thrust;
-        thrust_index = hover_thrust / (MTOW * 9.787);
+        RPM = Result1.RPMs;
+        Power_Elec = 4.*Result1.Pelectric;
+        hover_thrust = 4.*Result1.Thrust;
+        target_Power = 496; %kW, Peak EMRAX 228
+        
+        % Checking Static Constraints
+        RPM_closest = interp1(Power_Elec, RPM, target_Power);
 
-        % Check Thrust Constraint
+        % If the interpolated RPM is below 3000, find TWR at 3000 RPM
+        if RPM_closest <= 3000
+            TWR_3000 = interp1(RPM, hover_thrust, 3000); % Interpolating TWR at 3000 RPM
+        elseif isnan(RPM_closest) || RPM_closest >= 3000
+            return
+        end
+
+        thrust_index = TWR_3000 / (MTOW * 9.787);
+
         if thrust_index < 1.4
-            return;
+            return
         end
 
         % Run Dynamic QPROP (Cruise)
@@ -51,6 +64,7 @@ function [fitness,pitch] = evaluate_fitness(x)
         % Determine valid flight speed
         if isempty(fspeed)
             fspeed_true = NaN;
+            return
         elseif isscalar(fspeed) && fspeed > Vs
             fspeed_true = 0.8*fspeed;
         else

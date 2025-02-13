@@ -90,11 +90,11 @@ V = 8; % Number of Decision Variables (Diameter, Pitch & Number of Blades)
 % max_range = [72; 48; 3.99; 1.20; 1.0 ; 0.40];
 % % [max Diameter; max Pitch; max No of Blades; max C_mid1/2 (norm); max C_tip (norm)]
 
-min_range = [50; 2; 0.60; 0.4 ; 0.10; 20; 0.2; 0.1];
-% [min Diameter; min Pitch; min No of Blades; min C_mid1/2 (norm); min C_tip (norm)]
+min_range = [50; 2.00; 0.60; 0.4 ; 0.10; 20; 0.2; 0.1];
+% [min Diameter; min No of Blades; min C_mid1/2 (norm); min C_tip (norm)]
 
-max_range = [72; 3.99; 1.20; 1.0 ; 0.40; 50; 1.0; 0.3];
-% [max Diameter; max Pitch; max No of Blades; max C_mid1/2 (norm); max C_tip (norm)]
+max_range = [72; 5.00; 1.20; 1.0 ; 0.40; 50; 1.0; 0.3];
+% [max Diameter; max No of Blades; max C_mid1/2 (norm); max C_tip (norm)]
 
 
 %% Initialize the population
@@ -164,7 +164,7 @@ for i = 1 : gen
     % mum = 20;
 
     mu = 15; % To increase crossover impact
-    mum = 2; % To increase mutation strength
+    mum = 3; % To increase mutation strength
 
     offspring_chromosome = ...
         genetic_operator(parent_chromosome, ...
@@ -203,6 +203,7 @@ for i = 1 : gen
     % last front is included in the population based on the individuals with
     % least crowding distance
     chromosome = replace_chromosome(intermediate_chromosome, M, V, pop);
+    % plot(chromosome(:,V + 1),chromosome(:,V + 2),'*');
     if ~mod(i,1)
         clc
         fprintf('%d generations completed\n',i);
@@ -218,7 +219,14 @@ save solution.txt chromosome -ASCII
 %% Visualize
 % The following is used to visualize the result if objective space
 % dimension is visualizable.
+
+chromosome_plot = chromosome;
+chromosome_plot(:,V+1:V+2) = -chromosome_plot(:,V+1:V+2);
+
 if M == 2
+    figure(1)
+    plot(chromosome_plot(:,V + 1),chromosome_plot(:,V + 2),'*');
+    figure(2)
     plot(chromosome(:,V + 1),chromosome(:,V + 2),'*');
 elseif M ==3
     plot3(chromosome(:,V + 1),chromosome(:,V + 2),chromosome(:,V + 3),'*');
