@@ -119,7 +119,7 @@ function [fitness,pitch] = evaluate_fitness(x)
         flat_region_height = 2.05; % Keeps solutions stable near y = 2.05
 
         % Adaptive parabola that follows the solution distribution instead of fixed parameters
-        dynamic_curvature = -1.0 + 0.5 * rand(); % Allows slight variation per generation
+        dynamic_curvature = -1.0 + 0.2 * rand(); % Allows slight variation per generation
         dynamic_shift = 2.0 + 0.2 * rand(); % Adjusts parabola center dynamically
 
         ideal_fspeed = dynamic_curvature * (thrust_index - flat_region_start)^2 + dynamic_shift;
@@ -148,18 +148,14 @@ function [fitness,pitch] = evaluate_fitness(x)
         end
 
         % Introduce a penalty that discourages deviation from the ideal curve
-        parabolic_penalty_weight = 1.5;  % Adjust strength
+        parabolic_penalty_weight = 2;  % Adjust strength
         speed_penalty = speed_penalty + parabolic_penalty_weight * parabolic_deviation;
 
         % Apply additional soft constraint to stabilize the plateau region
         if (fspeed_true / Vs) < flat_region_height && thrust_index < flat_region_start + 0.5  
             speed_penalty = speed_penalty + 0.5 * abs(flat_region_height - (fspeed_true / Vs));
-        end
-
-        if (fspeed_true / Vs) < 0
-            speed_penalty = speed_penalty + 5 * abs(fspeed_true / Vs); % Stronger penalty for negative speeds
-        end
-
+end
+%%
         if speed_penalty ~= 0
             fprintf('Flight Speed Penalized! Penalty applied: %.4f\n', speed_penalty);
             fprintf('Obtained Speed: %.2f\n', fspeed_true);

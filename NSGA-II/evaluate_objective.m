@@ -1,4 +1,4 @@
-function f = evaluate_objective(x, M, V)
+function [f] = evaluate_objective(x, M, V)
 
 %% function f = evaluate_objective(x, M, V)
 % Function to evaluate the objective functions for the given input vector

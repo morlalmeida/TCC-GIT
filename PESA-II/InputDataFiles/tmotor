@@ -1,0 +1,10 @@
+
+Tmotor moya256
+
+1     ! motor type (Permanent magnet DC)
+
+
+0.020   ! Rmotor (Ohms)
+
+20   ! Io     (Amps) 
+29   ! Kv     (rpm/Volt)

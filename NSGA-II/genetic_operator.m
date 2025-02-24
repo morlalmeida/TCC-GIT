@@ -53,8 +53,8 @@ was_mutation = 0;
 
 
 for i = 1 : N
-    % With 90 % probability perform crossover
-    if rand(1) < 0.8
+    % With 60 % probability perform crossover
+    if rand(1) < 0.5
         % Initialize the children to be null vector.
         child_1 = [];
         child_2 = [];

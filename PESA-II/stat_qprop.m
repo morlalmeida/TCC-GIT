@@ -1,6 +1,6 @@
 function [Result1] = stat_qprop
     vel_design = 2; % m/s
-    RPM_range = linspace(200, 4000, 50); % RPM values
+    RPM_range = linspace(200, 4000, 100); % RPM values
     num_RPMs = numel(RPM_range);
 
     propfile = 'prop.txt'; % File containing prop info

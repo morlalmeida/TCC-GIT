@@ -1,7 +1,7 @@
-%% Initializing NSGA-II
+%% Initializing PESA-II
 clc;clear;close all
-pop = 250;      % Sets population size (min = 20)
-gen = 10;       % Sets number of generations (min = 5)
+nPop = 100;      % Adjusted population size for PESA-II
+MaxIt = 10;   % Adjusted number of generations
 
 % 🔹 Ensure Parallel Pool is Active (Limited to 5 Workers)
 poolobj = gcp('nocreate'); 
@@ -17,7 +17,7 @@ rho  = 1.15;  % Air Density [kg/m^3]
 Vs = sqrt((2*MTOW*g)/(rho*Sw*1.673));
 
 tic
-nsga_2(pop,gen) % Running Optmization :)
+pesa2(nPop, MaxIt); % Running PESA-II optimization :)
 elapsedTime = toc;  % Get elapsed time in seconds
 
 % Convert elapsed time to days, hours, minutes, and seconds

@@ -81,9 +81,22 @@ for i = 1 : pool_size
         c_obj_rank(j) = chromosome(candidate(j),rank);
         c_obj_distance(j) = chromosome(candidate(j),distance);
     end
-    % Find the candidate with the least rank
-    min_candidate = ...
-        find(c_obj_rank == min(c_obj_rank));
+
+
+    % % Find the candidate with the least rank (MUDANÇA GPT)
+    % min_candidate = ...
+    %     find(c_obj_rank == min(c_obj_rank));
+
+    prob_explore = 0.3; % Adjust based on results (HIGHER DIVERSITY)
+    if rand() < prob_explore
+        % Randomly pick from non-optimal candidates
+        min_candidate = randsample(1:length(c_obj_rank), 1);
+    else
+        % Otherwise, use standard selection
+        min_candidate = find(c_obj_rank == min(c_obj_rank));
+    end
+
+
     % If more than one candiate have the least rank then find the candidate
     % within that group having the maximum crowding distance.
     if length(min_candidate) ~= 1

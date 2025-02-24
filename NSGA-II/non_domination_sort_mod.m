@@ -170,17 +170,31 @@ for front = 1 : (length(F) - 1)
         f_max = ...
             sorted_based_on_objective(length(index_of_objectives), V + i);
         f_min = sorted_based_on_objective(1, V + i);
-        y(index_of_objectives(length(index_of_objectives)),M + V + 1 + i)...
-            = Inf;
-        y(index_of_objectives(1),M + V + 1 + i) = Inf;
+        % y(index_of_objectives(length(index_of_objectives)),M + V + 1 + i)...
+        %     = Inf;
+        % y(index_of_objectives(1),M + V + 1 + i) = Inf;
+
+
+        if length(index_of_objectives) > 5  % Ensure enough solutions exist (ADAPTATIVE DIST SCALING)
+         % Reduce influence of extreme solutions to spread mid-range values
+            y(index_of_objectives(length(index_of_objectives)),M + V + 1 + i) = 5; 
+            y(index_of_objectives(1),M + V + 1 + i) = 5;
+        else
+            y(index_of_objectives(length(index_of_objectives)),M + V + 1 + i) = Inf;
+            y(index_of_objectives(1),M + V + 1 + i) = Inf;
+        end
+
+
          for j = 2 : length(index_of_objectives) - 1
             next_obj  = sorted_based_on_objective(j + 1,V + i);
             previous_obj  = sorted_based_on_objective(j - 1,V + i);
             if (f_max - f_min == 0)
                 y(index_of_objectives(j),M + V + 1 + i) = Inf;
             else
+                % y(index_of_objectives(j),M + V + 1 + i) = ...
+                %      (next_obj - previous_obj)/(f_max - f_min);
                 y(index_of_objectives(j),M + V + 1 + i) = ...
-                     (next_obj - previous_obj)/(f_max - f_min);
+                      (next_obj - previous_obj)/(f_max - f_min)^2;
             end
          end
     end

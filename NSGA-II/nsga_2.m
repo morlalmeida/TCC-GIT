@@ -90,7 +90,7 @@ V = 8; % Number of Decision Variables (Diameter, Pitch & Number of Blades)
 % max_range = [72; 48; 3.99; 1.20; 1.0 ; 0.40];
 % % [max Diameter; max Pitch; max No of Blades; max C_mid1/2 (norm); max C_tip (norm)]
 
-min_range = [50; 2.00; 0.60; 0.4 ; 0.10; 20; 0.2; 0.1];
+min_range = [62; 3.00; 0.60; 0.4 ; 0.10; 30; 0.2; 0.1];
 % [min Diameter; min No of Blades; min C_mid1/2 (norm); min C_tip (norm)]
 
 max_range = [72; 5.00; 1.20; 1.0 ; 0.40; 50; 1.0; 0.3];
@@ -164,7 +164,7 @@ for i = 1 : gen
     % mum = 20;
 
     mu = 15; % To increase crossover impact
-    mum = 3; % To increase mutation strength
+    mum = 2; % To increase mutation strength
 
     offspring_chromosome = ...
         genetic_operator(parent_chromosome, ...
@@ -203,6 +203,7 @@ for i = 1 : gen
     % last front is included in the population based on the individuals with
     % least crowding distance
     chromosome = replace_chromosome(intermediate_chromosome, M, V, pop);
+    pareto_fronts{i} = chromosome;
     % plot(chromosome(:,V + 1),chromosome(:,V + 2),'*');
     if ~mod(i,1)
         clc
@@ -231,4 +232,34 @@ if M == 2
 elseif M ==3
     plot3(chromosome(:,V + 1),chromosome(:,V + 2),chromosome(:,V + 3),'*');
 end
+
+figure(3);
+hold on;
+colors = linspace(0.2, 1, gen); % Define fading effect
+
+for g = 1:gen
+    % Extract Pareto front for generation g
+    chromosome_plot1 = pareto_fronts{g};
+
+    % Remove infeasible individuals (with [1e6, 1e6] fitness values)
+    valid_indices = ~(chromosome_plot1(:,V+1) == 1e6 & chromosome_plot1(:,V+2) == 1e6);
+    chromosome_plot1 = chromosome_plot1(valid_indices, :);
+    
+    % Reverse objective values if necessary
+    chromosome_plot1(:,V+1:V+2) = -chromosome_plot1(:,V+1:V+2);
+
+    % Plot with increasing opacity
+    scatter(chromosome_plot1(:,V + 1), chromosome_plot1(:,V + 2), 15, ...
+        [0, 0, 1] * colors(g), 'filled', 'MarkerFaceAlpha', colors(g));  
+end
+
+% Highlight final generation in red
+chromosome2(:,V+1:V+2) = -chromosome(:,V+1:V+2);
+scatter(chromosome2(:,V + 1), chromosome2(:,V + 2), 40, 'r', 'filled', 'MarkerFaceAlpha', 1);
+
+title('NSGA-II Pareto Front Evolution');
+ylabel('Objective 2 (Flight Speed)');
+xlabel('Objective 1 (Thrust in Hover)');
+grid on;
+hold off;
     
